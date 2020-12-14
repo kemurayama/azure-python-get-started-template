@@ -1,0 +1,38 @@
+name: Python application
+
+on: [push]
+
+env:
+  AZURE_WEBAPP_NAME: my-app
+  AZURE_WEBAPP_PACKAGE_PATH: "./webapp"
+  PYTHON_VERSION: "3.8"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Deploy web App using GH Action azure/webapps-deploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: logout
+        run: |
+          az logout
