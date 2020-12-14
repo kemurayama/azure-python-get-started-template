@@ -127,3 +127,20 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Azure Functions artifacts
+bin
+obj
+appsettings.json
+local.settings.json
+.python_packages
+
+# VSCODE artifacts
+.vscode
+
+# terraform artifact
+.terraform
+.terraform.**
+*.plan
+terraform.tfstate
+terraform.tfstate.backup
