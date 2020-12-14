@@ -65,7 +65,7 @@ resource "azurerm_app_service" "example" {
 
   site_config {
     always_on        = true
-    linux_fx_version = "PYTHON|3.8"
+    linux_fx_version = var.runtime_stack
     # https://docs.microsoft.com/ja-jp/azure/app-service/configure-language-python
     # app_command_line = "gunicorn --bind=0.0.0.0 --timeout 600 --chdir app main:app"
     app_command_line = ""
@@ -88,14 +88,14 @@ resource "azurerm_function_app" "example" {
 
   site_config {
     always_on        = true
-    linux_fx_version = "Python|3.8"
+    linux_fx_version = var.runtime_stack
     ftps_state       = "Disabled"
     min_tls_version  = 1.2
   }
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE"              = "1"
-    "FUNCTIONS_WORKER_RUNTIME"              = "python"
+    "FUNCTIONS_WORKER_RUNTIME"              = var.functions_worker_runtime
     "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.example.instrumentation_key
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = "InstrumentationKey=${azurerm_application_insights.example.instrumentation_key};IngestionEndpoint=https://japaneast-0.in.applicationinsights.azure.com/"
   }
